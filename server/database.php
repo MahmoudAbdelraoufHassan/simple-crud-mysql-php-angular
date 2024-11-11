@@ -1,8 +1,10 @@
 <?php 
+
 header( 'Content-type:application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: *");
+
 class Database {
     private $connection;
     private $dbuser = 'root';
@@ -91,10 +93,15 @@ public function create($pr_name, $pr_desc, $pr_price, $discount, $q, $thumbnail)
     
     echo json_encode(['message' => 'Product created successfully'], JSON_PRETTY_PRINT);
 }
-public function readAll(){
-$query = 'select * from products';
-$this->stmt = $this->connection->query($query);
-echo json_encode( $this->stmt->fetchAll(PDO::FETCH_ASSOC) , JSON_PRETTY_PRINT);
+public function readAll($page){
+$rows = 5;
+$calcPage = ($page - 1 ) * $rows;
+$query = 'select * from products limit :rows offset :calcPage';
+$this->stmt = $this->connection->prepare($query);
+$this->stmt->bindParam(':rows' , $rows , PDO::PARAM_INT);
+$this->stmt->bindParam(':calcPage' , $calcPage  , PDO::PARAM_INT);
+$this->stmt->execute();
+echo json_encode( ['page'=> $page ,'result'=>$this->stmt->fetchAll(PDO::FETCH_ASSOC) ], JSON_PRETTY_PRINT);
 }
 
 public function readSingle($id) {
