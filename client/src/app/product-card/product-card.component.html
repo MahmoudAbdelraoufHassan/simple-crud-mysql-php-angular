@@ -1,0 +1,21 @@
+<div class="card" style="width: 18rem;">
+  <img [src]="img + product.thumbnail" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{product?.product_name}}</h5>
+    <p class="card-text">{{product?.product_desc}}</p>
+    <div class="actions d-flex gap-2">
+      <a class="btn bg-primary text-light">
+        <i class="ri-eye-line"></i>
+      </a>
+      <a class="btn bg-warning text-light">
+        <i class="ri-edit-line"></i>
+      </a>
+      <a class="btn bg-danger text-light" (click)="deleteProduct(product?.id)">
+        <i class="ri-delete-bin-line"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- id, product_name, product_desc, product_price, discount, quantity, thumbnail -->
