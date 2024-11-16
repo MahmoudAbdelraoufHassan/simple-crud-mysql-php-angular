@@ -1,0 +1,30 @@
+<div class="popUp" [ngClass]="{'show': popUp }">
+  <form [formGroup]="productInfo" (ngSubmit)="addProduct()" class="bg-dark p-3 rounded-2">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label text-light">Product Name:</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="product name" formControlName="product_name">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label text-light">Product Price</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="price" formControlName="product_price">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label text-light">Discount:</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="discount" formControlName="discount">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label text-light">Quantity:</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="discount" formControlName="quantity" >
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label text-light">Description</label>
+        <textarea type="text" class="form-control" id="exampleFormControlInput1" placeholder="descripe your product..." formControlName="product_desc"></textarea>
+</div>
+<div class="mb-3">
+  <label for="formFile" class="form-label text-light">Product Image</label>
+  <input class="form-control" type="file" id="formFile" formControlName="thumbnail" (change)="getImage($event)">
+</div>
+<button class="btn bg-primary text-light me-3">submit</button>
+<a class="btn bg-danger text-light" (click)="hidePopUp()">close</a>
+</form>
+</div>

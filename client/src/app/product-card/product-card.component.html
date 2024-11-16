@@ -4,7 +4,7 @@
     <h5 class="card-title">{{product?.product_name}}</h5>
     <p class="card-text">{{product?.product_desc}}</p>
     <div class="actions d-flex gap-2">
-      <a class="btn bg-primary text-light">
+      <a class="btn bg-primary text-light" (click)="getId(product?.id)" (click)="show()">
         <i class="ri-eye-line"></i>
       </a>
       <a class="btn bg-warning text-light">

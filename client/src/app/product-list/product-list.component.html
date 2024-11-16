@@ -1,25 +1,47 @@
 <header class="mb-3" >
   <div class="container mt-5 d-flex justify-content-between  border-bottom border-secondary py-2">
     <h2 class="text-light">Product List</h2>
-    <div class="action_box d-flex gap-1 align-items-center">
-      <a class="btn bg-primary text-light">Add Product</a>
-      <form class="search ">
+    <div class="action_box d-flex gap-1">
+      <a class="btn bg-primary text-light d-flex align-items-center justify-content-center h-100" (click)="showPopuP()">Add Product</a>
+      <form class="search " [formGroup]="searchInput" >
         <div class="search_box d-flex gap-1">
-          <input type="text" placeholder="search by name" class="form-control" id="exampleFormControlInput1">
-          <i class='ri-search-line btn bg-primary text-light fs-5'></i>
+          <input type="text" placeholder="search by name" class="form-control"  id="exampleFormControlInput1" formControlName="keyword">
+          @if(end){
+              <button class="btn bg-danger text-light fs-5 " (click)="endSearch()" >
+              <i class="ri-close-line"></i>
+            </button>
+            }
+            @else {
+              <button class="btn bg-primary text-light fs-5" (click)="search()" >
+                <i class='ri-search-line '></i>
+              </button>
+           }
         </div>
       </form>
     </div>
   </div>
   </header>
-<section>
-  <div class="container d-flex flex-wrap gap-2">
-    @for (item of Data; track $index) {
-      <app-product-card [product]="item" (delete)="deleteProd($event)"></app-product-card>
+<section class="py-3">
+  <div class="container d-flex flex-wrap gap-2 justify-content-center">
+    @for (item of Data?.result; track $index) {
+      <app-product-card [product]="item" (delete)="deleteProd($event)" (id)="getId($event)" (showPopup)="viewProduct($event)"></app-product-card>
     }
     @empty {
       <h3 class="text-light">no products</h3>
     }
   </div>
 </section>
+<div class="pagnation d-flex mt-4 align-items-center justify-content-center">
+<a (click)="prev()" class="btn fs-4" [ngClass]="{'disable' : disbaleprev}">
+  <i class="ri-arrow-left-s-line text-light"></i>
+</a>
 
+<span class="text-light">{{Data?.page}}</span>
+
+<a (click)="next()" [ngClass]="{'disable' : disbaleNext}" class="btn fs-4">
+  <i class="ri-arrow-right-s-line text-light "></i>
+</a>
+</div>
+<app-add-product [popUp]="show" (hide)="closePopUp($event)"></app-add-product>
+
+<app-view-product [Data]="productData" [show]="showViewProduct" (closeView)="closeView($event)"></app-view-product>

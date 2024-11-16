@@ -8,11 +8,16 @@ import { Observable } from 'rxjs';
 export class ApiService {
 
   constructor(private http : HttpClient) { };
+
   createProduct($data : any){
-    this.http.post("http://localhost/product_crud/server/products.php" , $data);
+    return this.http.post("http://localhost/product_crud/server/products.php" , $data);
   }
-  getProducts() : Observable<any>{
-   return this.http.get("http://localhost/product_crud/server/products.php");
+  getProducts(page : number = 1) : Observable<any>{
+   return this.http.get("http://localhost/product_crud/server/products.php" , {
+    params : {
+      "page" : page
+    }
+   });
   }
   deleteProduct(id : number){
     return this.http.delete(`http://localhost/product_crud/server/products.php` , {
@@ -23,9 +28,14 @@ export class ApiService {
   //   this.http.put("http://localhost/product_crud/server/product.php" , )
   // }
   searchByname(keyword : string){
-    this.http.get("http://localhost/product_crud/server/searchByname.php");
+   return this.http.get("http://localhost/product_crud/server/searchByname.php" , {
+      params : {
+        "keyword" : keyword }
+    });
   }
-  getProduct($id : number){
-    this.http.get("http://localhost/product_crud/server/product.php")
+  getProduct(id : number){
+    return this.http.get("http://localhost/product_crud/server/product.php" , {
+      params : {"id" : id}
+    })
   }
 }

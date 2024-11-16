@@ -13,6 +13,7 @@ class Database {
 
     private $dbname = 'product_crud';
     private $stmt;
+    private $rows = 4;
 public function __construct() {
     try {
     $this->connection = new PDO("mysql:host=$this->dbhost;dbname=$this->dbname" , $this->dbuser ,$this->dbpass);
@@ -94,11 +95,10 @@ public function create($pr_name, $pr_desc, $pr_price, $discount, $q, $thumbnail)
     echo json_encode(['message' => 'Product created successfully'], JSON_PRETTY_PRINT);
 }
 public function readAll($page){
-$rows = 5;
-$calcPage = ($page - 1 ) * $rows;
+$calcPage = ($page - 1 ) * $this->rows;
 $query = 'select * from products limit :rows offset :calcPage';
 $this->stmt = $this->connection->prepare($query);
-$this->stmt->bindParam(':rows' , $rows , PDO::PARAM_INT);
+$this->stmt->bindParam(':rows' , $this->rows , PDO::PARAM_INT);
 $this->stmt->bindParam(':calcPage' , $calcPage  , PDO::PARAM_INT);
 $this->stmt->execute();
 echo json_encode( ['page'=> $page ,'result'=>$this->stmt->fetchAll(PDO::FETCH_ASSOC) ], JSON_PRETTY_PRINT);
@@ -180,6 +180,12 @@ public function updateProduct($pr_id,$pr_name, $pr_desc, $pr_price, $discount, $
         $this->stmt->execute();
 }
 public function Delete($id) {
+    $this->stmt = $this->connection-> prepare('select thumbnail from products where id = :id');
+    $this->stmt->bindParam(":id" , $id);
+    $this->stmt->execute();
+    $thumbnail = $this->stmt->fetch(PDO::FETCH_COLUMN);
+    unlink($thumbnail);
+
 $query = 'Delete from products where id = :id';
 $this->stmt = $this->connection->prepare($query);
 $this->stmt->bindParam(":id" , $id , PDO::PARAM_INT);
@@ -187,18 +193,14 @@ $this->stmt->execute();
 echo json_encode("product deleted successfully" , JSON_PRETTY_PRINT);
 }
 public  function searchByname($keyword){
+
 $query = "select * from products where product_name LIKE :keyword";
 $this->stmt = $this->connection->prepare($query);
 $this->stmt->bindParam(':keyword' , $keyword);
 $keyword .= "%";
 $this->stmt->execute();
-$count = $this->stmt->rowCount();
-if($count > 0) {
+// $count = $this->stmt->rowCount();
     echo json_encode(['result' => $this->stmt->fetchAll(PDO::FETCH_ASSOC)]);
-}
-else {
-    echo json_encode(['result'=> "product not found"]);
-}
 }
 public function __destruct() {
     $this->connection = null;

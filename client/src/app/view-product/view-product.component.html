@@ -1,0 +1,34 @@
+<div class="popUp" [ngClass]="{'show' : show}">
+  <div class="content bg-dark rounded-2 p-2 position-relative">
+  <div class="box d-flex gap-2">
+    <div class="product_image">
+      <img [src]="img + Data?.thumbnail" alt="">
+    </div>
+    <div class="product_info">
+      <ul>
+        <li>
+          <span class="text-light me-2">Product:</span>
+          <span class="text-secondary">{{Data?.product_name}}</span>
+        </li>
+        <li>
+          <span class="text-light me-2" >price:</span>
+          <span class="text-secondary">{{Data?.product_price}}</span>
+        </li>
+        <li>
+          <span class="text-light me-2" >discount:</span>
+          <span class="text-secondary">{{Data?.discount}}</span>
+        </li>
+        <li>
+          <span class="text-light me-2" >quantity:</span>
+          <span class="text-secondary">{{Data?.quantity}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="proudct_desc">
+    <span class="text-light me-2 fs-6">Descripton:</span>
+    <p class="text-secondary">{{Data?.product_desc}}</p>
+  </div>
+<button class="btn bg-danger position-absolute mb-2 bottom-0 text-light" (click)="closeViewproduct()">Close</button>
+</div>
+</div>
